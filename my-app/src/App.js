@@ -1,8 +1,10 @@
-import {LoginForm} from "../src/compoments/"
+import './index.css';
+import { RegisterForm } from "./library/antdesign/compoment"
+
 
 function App() {
   return (
-    <LoginForm></LoginForm>
+    <RegisterForm></RegisterForm>
   );
 }
 
