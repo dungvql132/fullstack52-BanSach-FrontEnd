@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Form, Input, Button, DatePicker } from "antd";
+import { Form, Input, Button, DatePicker,Select } from "antd";
 import API from "../../../callAPI"
 let RegisterForm;
+const { Option } = Select;
+
 export default RegisterForm = () => {
   const [form] = Form.useForm();
   const [email, setEmail] = useState('');
@@ -10,21 +12,27 @@ export default RegisterForm = () => {
   const [userName, setUserName] = useState('');
   const [phone, setPhone] = useState('');
   const [birthday, setBirthday] = useState('');
+  const [kindPerson, setKindPerson] = useState('buyer');
   const user = {
     email,
     password,
     userName,
     phone,
-    birthday
+    birthday,
+    kindPerson
   }
   return (
     <Form
       form={form}
       layout="horizontal"
       labelAlign="left"
-      labelCol={{ span: 4 }}
+      labelCol={{ span: 6 }}
       wrapperCol={{ span: 16 }}
       size="large"
+      onFinish={async ()=>{
+        const result = await API.Login.register(user);
+        console.log(result);
+      }}
     >
       <Form.Item
         name = "name"
@@ -36,7 +44,10 @@ export default RegisterForm = () => {
       <Form.Item
         name = "email"
         label="email"
-        rules={[{required:true,message:"please input your email"}]}
+        rules={[
+          {required:true,message:"please input your email"},
+          {pattern:/@gmail.com$/,message:"please use gmail.com"}
+      ]}
       >
         <Input onChange = {(e)=>{setEmail(e.target.value)}}></Input>
       </Form.Item>
@@ -63,10 +74,19 @@ export default RegisterForm = () => {
       </Form.Item>
       <Form.Item
         name = "phone"
-        label="phone number"
+        label="phone"
         rules={[{required:true,message:"please input your phone"}]}
       >
         <Input onChange = {(e)=>{setPhone(e.target.value)}}></Input>
+      </Form.Item>
+      <Form.Item
+        name = "kind"
+        label= "kind person"
+      >
+        <Select defaultValue="buyer" onChange={(e)=>{setKindPerson(e)}}>
+          <Option value="seller">seller</Option>
+          <Option value="buyer">buyer</Option>
+        </Select>
       </Form.Item>
       <Form.Item
         name="birthday"
@@ -82,10 +102,7 @@ export default RegisterForm = () => {
         }}></DatePicker>
       </Form.Item>
       <Form.Item>
-        <Button type="primary" onClick={()=>{
-          console.log(user);
-          API.Login.register(user);
-        }}>Register</Button>
+        <Button type="primary" htmlType="submit">Register</Button>
       </Form.Item>
     </Form>
   );
