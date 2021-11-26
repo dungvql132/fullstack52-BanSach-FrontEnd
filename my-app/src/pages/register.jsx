@@ -1,4 +1,4 @@
-import {RegisterForm} from "../library/antdesign/compoment"
+import Compoment,{RegisterForm} from "../compoments"
 import styled from "styled-components"
 
 

@@ -1,19 +1,16 @@
 import './index.css';
-import { RegisterPage, LoginPage } from "./pages";
+import { RegisterPage, LoginPage, Home, ViewBook } from "./pages";
 import { Link, Switch, BrowserRouter as Router, Route, Redirect } from "react-router-dom"
-import { AddBook,BookTable } from "./library/antdesign/compoment"
+import Compoment from "./compoments"
 
 function App() {
   return (
     <Router>
       <div>
-        <Link to="/login" style={{ marginRight: "10px" }}>login</Link>
-        <Link to="/register" style={{ marginRight: "10px" }}>register</Link>
-        <Link to="/addbook" style={{ marginRight: "10px" }}>addbook</Link>
-        <Link to="/booktable" style={{ marginRight: "10px" }}>booktable</Link>
+        <Compoment.Header></Compoment.Header>
         <Switch>
           <Route exact path="/">
-            <Home />
+            <Home></Home>
           </Route>
           <Route exact path="/login">
             <LoginPage></LoginPage>
@@ -21,11 +18,14 @@ function App() {
           <Route exact path="/register">
             <RegisterPage></RegisterPage>
           </Route>
-          <Route exact path="/addbook">
-            <AddBook></AddBook>
+          <Route exact path="/usertable">
+            <Compoment.UserTable></Compoment.UserTable>
           </Route>
           <Route exact path="/booktable">
-            <BookTable></BookTable>
+            <Compoment.BookTable></Compoment.BookTable>
+          </Route>
+          <Route exact path="/viewbook/:_id">
+            <ViewBook></ViewBook>
           </Route>
           <Route path="*">
             <h1>Not Found 404</h1>
@@ -34,9 +34,6 @@ function App() {
       </div>
     </Router>
   );
-}
-function Home() {
-  return <h1>Home</h1>
 }
 
 export default App;

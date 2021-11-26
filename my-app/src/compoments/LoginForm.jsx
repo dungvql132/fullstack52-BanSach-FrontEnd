@@ -1,15 +1,12 @@
-import React, { useState } from "react";
-import { Form, Input, Button, DatePicker } from "antd";
-import API from "../../../callAPI";
-let LoginForm;
-export default LoginForm = () => {
+import React, { useState,useContext } from "react";
+import { Form, Input, Button } from "antd";
+import API from "../callAPI";
+import { MainContext } from "../context";
+
+export default function LoginForm(){
+  console.log("vao login form");
+  const { setIsLogin } = useContext(MainContext);
   const [form] = Form.useForm();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const user = {
-    email,
-    password,
-  };
   return (
     <Form
       form={form}
@@ -19,8 +16,12 @@ export default LoginForm = () => {
       wrapperCol={{ span: 16 }}
       size="large"
       onFinish={async () => {
-        console.log(user);
-        API.Login.signin(user);
+        // console.log(user);
+        let result = await API.Login.signin(form.getFieldsValue());
+        if(result.status == 200){
+          localStorage.setItem("token",result.token);
+          setIsLogin(true);
+        }
       }}
     >
       <Form.Item
@@ -28,22 +29,14 @@ export default LoginForm = () => {
         label="email"
         rules={[{ required: true, message: "please input your email" }]}
       >
-        <Input
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-        ></Input>
+        <Input></Input>
       </Form.Item>
       <Form.Item
         name="password"
         label="password"
         rules={[{ required: true, message: "please input your password" }]}
       >
-        <Input.Password
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        ></Input.Password>
+        <Input.Password></Input.Password>
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit">

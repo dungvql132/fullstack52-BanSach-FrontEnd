@@ -1,10 +1,10 @@
 import React, { useState,useEffect } from "react";
 import { Modal, Button, Form } from "antd";
-import { AddBookForm } from "."; 
+import AddBookForm from "./AddBookForm"; 
 import { useHistory,useLocation } from "react-router-dom";
 
-export default function AddBook() {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+export default function AddBook({ isModalVisible, setIsModalVisible, data, handleRefresh}) {
+  // const [isModalVisible, setIsModalVisible] = useState(false);
   const [message, setMessage] = useState("");
 
 
@@ -25,28 +25,18 @@ export default function AddBook() {
 
   return (
     <div>
-      <Button
-        onClick={(e) => {
-          handleChange(setIsModalVisible, true);
-        }}
-      >
-        modal
-      </Button>
-      <Button onClick={(e) => {
-          history.push(`${location.pathname}/login`);
-      }}>chuyen trang</Button>
       <Modal
         visible={isModalVisible}
         // onOk={()=>{handleChange(setIsModalVisible,false)}}
         onCancel={() => {
-          handleChange(setIsModalVisible, false);
+          setIsModalVisible(false);
         }}
         width = {800}
         footer={[
           message==""?null:<p>{message}</p>
         ]}
       >
-        <AddBookForm sendMessage={sendMessage}></AddBookForm>
+        <AddBookForm sendMessage={sendMessage} data={data} handleRefresh={handleRefresh}></AddBookForm>
       </Modal>
     </div>
   );
