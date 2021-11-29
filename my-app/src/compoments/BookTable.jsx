@@ -24,12 +24,21 @@ export default function BookTable() {
   const handleRefresh = () => {
     callData();
   };
-  useEffect(() => {
-    callData();
+  useEffect(async () => {
+    await callData();
   }, []);
+
   const callData = async () => {
     try {
-      const myData = await API.Book.getAll();
+      const user = await API.Login.getCurrentUser();
+      let myData;
+      if(user.data.kindPerson == "admin"){
+        myData = await API.Book.getAll();
+      }else{
+        myData = await API.Book.find({
+          "idProducer":user.data._id
+        });
+      }
       if (myData.status == 200) {
         setDatas(
           myData.data.map((value, index) => {
@@ -37,7 +46,7 @@ export default function BookTable() {
             return value;
           })
         );
-        // console.log(datas);
+        console.log("datas: ",myData);
       }
     } catch (error) {}
   };

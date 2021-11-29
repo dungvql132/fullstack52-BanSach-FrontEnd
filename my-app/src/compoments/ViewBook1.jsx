@@ -1,29 +1,29 @@
 import { Row, Image, Col } from "antd";
 import React from "react";
-import { useHistory,useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import { Card } from "antd";
+import { DoubleRightOutlined } from "@ant-design/icons";
+const { Meta } = Card;
 
 export default function ViewBook1({ data }) {
   const history = useHistory();
   const location = useLocation();
   return (
-    <div className="flex flex-col h-48 w-36 bg-indigo-300">
-      <div className="w-32 mx-auto h-32">
-        <Image src={data.img} width='100%' height='100%'/>
-      </div>
-      <div>
-        {data.bookName}
-      </div>
-      <div>
-        {data.producerName}
-      </div>
-      <div>
-        {data.cost}
-      </div>
-      <div onClick={()=>{
-        history.push("/viewbook/"+data._id);
-      }}>
-        more
-      </div>
-    </div>
+      <Card
+        onClick={() => {
+          history.push("/viewbook/" + data._id);
+        }}
+        hoverable
+        style={{ width: "200px", height: "300px" }}
+        cover={
+          <img
+            alt="example"
+            src={data.img}
+            style={{ width: "180px", height: "200px" }}
+          />
+        }
+      >
+        <Meta title={data.bookName} description={"cost: " + data.cost} />
+      </Card>
   );
 }

@@ -3,7 +3,7 @@ import { Form, Input, Button, DatePicker, Select, Image,Row } from "antd";
 import UploadImg from "./UploadImg";
 import API from "../callAPI";
 import styled from "styled-components"
-let RegisterForm;
+
 const { Option } = Select;
 
 const Dung = styled.div`
@@ -12,7 +12,7 @@ const Dung = styled.div`
   }
 `
 
-export default RegisterForm = () => {
+export default function UpdateMyselfForm(){
   const [form] = Form.useForm();
   const [birthday, setBirthday] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
@@ -24,6 +24,14 @@ export default RegisterForm = () => {
   form.setFieldsValue({
     kindPerson: "buyer",
   });
+  React.useEffect(async()=>{
+    let user = await API.Login.getCurrentUser();
+    user.data.birthday = null;
+    form.setFieldsValue({
+        ...user.data
+    })
+    setAvatarUrl(user.data.avatar);
+  })
   return (
     <Form
       form={form}
@@ -33,9 +41,10 @@ export default RegisterForm = () => {
       wrapperCol={{ span: 16 }}
       size="large"
       onFinish={async () => {
-        let user = {...form.getFieldsValue(),birthday};
-        console.log("user: ",user);
-        const result = await API.Login.register(user);
+          let oldUser = await API.Login.getCurrentUser();
+        let newUser = {...form.getFieldsValue(),birthday};
+        console.log("user: ",newUser);
+        const result = await API.User.update({_id:oldUser.data._id},newUser);
         console.log("register ",result);
       }}
     >

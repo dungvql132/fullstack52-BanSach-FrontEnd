@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Input, Button, Row, Select, InputNumber, Image, Col } from "antd";
 import UploadImg from "./UploadImg";
 import API from "../callAPI";
+import {CATEGORY} from "../constaint"
 const { Option } = Select;
 let AddBookForm;
 
@@ -113,11 +114,9 @@ export default AddBookForm = ({ sendMessage, data, handleRefresh}) => {
       </Form.Item>
       <Form.Item name="category" label="category">
         <Select defaultValue="horror">
-          <Option value="horror">horror</Option>
-          <Option value="aventure">aventure</Option>
-          <Option value="romantic">romantic</Option>
-          <Option value="conmedy">conmedy</Option>
-          <Option value="fantasy">fantasy</Option>
+          {CATEGORY.map((value)=>{
+            return <Option value={value}>{value}</Option>
+          })}
         </Select>
       </Form.Item>
       <Row>

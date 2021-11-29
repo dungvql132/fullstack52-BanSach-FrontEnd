@@ -14,6 +14,11 @@ import ViewBook1 from "./ViewBook1";
 import Demo from "./TesstFile"
 import ViewLstBook1 from "./ViewLstBook1";
 import UserTable from "./UserTable";
+import Basket from "./Basket";
+import BillTable from "./BillTable";
+import UpdateMyselfForm from "./UpdateMyselfForm";
+import ViewAllBook from "./ViewAllBook";
+import ForgotPass from "./ForgotPass";
 
 const Compoment = {
     RegisterForm,
@@ -25,7 +30,12 @@ const Compoment = {
     Header,
     ViewBook1,
     ViewLstBook1,
-    UserTable
+    UserTable,
+    Basket,
+    BillTable,
+    UpdateMyselfForm,
+    ViewAllBook,
+    ForgotPass
 }
 
 export {
@@ -37,7 +47,12 @@ export {
     Demo,
     Header,
     ViewBook1,
-    ViewLstBook1
+    ViewLstBook1,
+    Basket,
+    BillTable,
+    UpdateMyselfForm,
+    ViewAllBook,
+    ForgotPass
 }
 
 export default Compoment;

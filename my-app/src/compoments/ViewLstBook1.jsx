@@ -3,16 +3,13 @@ import { ViewBook1 } from ".";
 import { List, Card } from "antd";
 import API from "../callAPI";
 import styled from "styled-components";
+import { Typography } from 'antd';
+import { Link } from "react-router-dom";
+import {DoubleRightOutlined} from "@ant-design/icons"
+
+const { Title } = Typography;
 
 const MyList = styled.div`
-  .ant-list.ant-spin-nested-loading.ant-spin-container.ant-row{
-    overflow-x: auto;
-  }
-  .ant-list{
-    overflow-x: auto;
-    height: 340px;
-    width: auto;
-  }
 `
 
 export default function ViewLstBook1({ category }) {
@@ -24,16 +21,16 @@ export default function ViewLstBook1({ category }) {
   }, []);
   return (
     <MyList>
-    <div>
-      <div>{category}</div>
+    <div >
+    <Title level={3}><Link to={"/viewallbook/"+category} ><p className='text-black'>{category} <DoubleRightOutlined /></p></Link></Title>
       <div className>
         <List
         split={false}
-        grid={{ gutter: 16 }}
+        grid={{ gutter: 16, column:7 }}
         dataSource={lstBook}
         renderItem={item=>(
           <List.Item>
-            <Card title={item.bookName}><ViewBook1 data={item}></ViewBook1></Card>
+            <ViewBook1 data={item}></ViewBook1>
           </List.Item>
         )}
         >

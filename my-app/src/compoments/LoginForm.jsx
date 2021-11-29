@@ -1,9 +1,10 @@
-import React, { useState,useContext } from "react";
-import { Form, Input, Button } from "antd";
+import React, { useState, useContext } from "react";
+import { Form, Input, Button, Row, Col } from "antd";
 import API from "../callAPI";
 import { MainContext } from "../context";
+import { Link } from "react-router-dom";
 
-export default function LoginForm(){
+export default function LoginForm() {
   console.log("vao login form");
   const { setIsLogin } = useContext(MainContext);
   const [form] = Form.useForm();
@@ -18,8 +19,8 @@ export default function LoginForm(){
       onFinish={async () => {
         // console.log(user);
         let result = await API.Login.signin(form.getFieldsValue());
-        if(result.status == 200){
-          localStorage.setItem("token",result.token);
+        if (result.status == 200) {
+          localStorage.setItem("token", result.token);
           setIsLogin(true);
         }
       }}
@@ -38,11 +39,18 @@ export default function LoginForm(){
       >
         <Input.Password></Input.Password>
       </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Login
-        </Button>
-      </Form.Item>
+      <Row>
+        <Col>
+          <Button type="primary" htmlType="submit">
+            Login
+          </Button>
+        </Col>
+        <Col span={11} offset={8}>
+          <Button type="ghost">
+            <Link to="/forgotpass">forget your password?</Link>
+          </Button>
+        </Col>
+      </Row>
     </Form>
   );
-};
+}

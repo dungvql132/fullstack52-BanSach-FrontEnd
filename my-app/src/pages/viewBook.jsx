@@ -13,14 +13,14 @@ export default function ViewBook() {
     if (_id) {
       let result = await API.Book.find({ _id });
       console.log(result);
+      console.log("vao effect");
       if(result.status == 200){
           setData(result.data[0]);
       }
     }
-  });
+  },[]);
   return (
     <div className="">
-      <div>view book 2 : {_id}</div>
       <ViewBook2 data={data}></ViewBook2>
     </div>
   );

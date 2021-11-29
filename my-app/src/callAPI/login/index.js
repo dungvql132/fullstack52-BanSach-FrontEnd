@@ -33,6 +33,22 @@ export const register = async (obj) => {
     return myJson;
 }
 
+export const forgetpass = async (obj) => {
+    const response = await fetch(`${HOST}login/forgetpass`, {
+        method: 'POST',
+        body: JSON.stringify({ data: obj }),
+        headers: {
+            'Content-Type': 'application/json',
+            'token': getToken()
+        },
+
+    });
+    const myJson = await response.json();
+
+    // console.log(myJson);
+    return myJson;
+}
+
 export const signin = async (obj) => {
     const response = await fetch(`${HOST}login/signin`, {
         method: 'POST',
