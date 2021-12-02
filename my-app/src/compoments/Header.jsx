@@ -1,15 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MainContext } from "../context";
-import { Row, Col, Menu, Button, Dropdown } from "antd";
+import { Row, Col, Menu, Button, Dropdown, Input, Image, Tooltip } from "antd";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useHistory, useLocation } from "react-router-dom";
-
-import {
-  SearchOutlined,
-  AppstoreOutlined,
-  HomeOutlined,
-} from "@ant-design/icons";
+import { SearchOutlined, QqOutlined, ShoppingCartOutlined, UnorderedListOutlined, CloseOutlined, HomeOutlined, AppstoreOutlined } from '@ant-design/icons';
+// import { Link } from 'react-router-dom';
+import './Header.css'
+import useSelection from 'antd/lib/table/hooks/useSelection';
 import SearchForm from "./SearchForm";
 import API from "../callAPI";
 
@@ -45,7 +43,7 @@ export default function Header() {
   }, [isLogin]);
   return (
     <div>
-      <MyHeader className={"h-24"}>
+      {/* <MyHeader className={"h-24"}>
         <Row className={"h-full"}>
           <Col
             span={6}
@@ -95,7 +93,7 @@ export default function Header() {
                 </Col>
               )}
             </Row>
-            <Row>
+            <Row style={{marginLeft : '300px'}}>
               <Menu
                 // onClick={this.handleClick} selectedKeys={[current]}
                 className="w-full"
@@ -119,7 +117,68 @@ export default function Header() {
             </Row>
           </Col>
         </Row>
-      </MyHeader>
+      </MyHeader> */}
+      <header>
+        <div className="menu">
+          <img src="https://i.ibb.co/kD3ZHjy/book-with-home-study-logo-design-vector-icon-symbol-graphic-illustration-2-EP7-G0-A.jpg" style={{ width: "100" }} />
+        </div>
+        <div className="logo">
+          <Link to="/" >
+            <img src="https://i.ibb.co/kD3ZHjy/book-with-home-study-logo-design-vector-icon-symbol-graphic-illustration-2-EP7-G0-A.jpg" style={{ width: "100px", borderRadius: "10px" }} />
+          </Link>
+
+        </div>
+        <div style={{ width: '45%' }}>
+          <div style={{ display: 'flex' }}>
+            <Input placeholder="Tìm kiếm sản phẩm, danh mục hay thương hiện mong muốn..." style={{ border: '1px solid #A52A2A', width: '85%' }} />
+            <Button icon={<SearchOutlined />}>Search</Button>
+          </div>
+        </div>
+        <nav>
+          <ul style={{ marginTop: '20px' }}>
+            <li><Link to="/">Home</Link></li>
+            {/* <li><Link to="/product">Product</Link></li>
+                    <li><Link to="/contact">Contact</Link></li>
+                    <li><Link to="/about">About</Link></li> */}
+            <li ><Link to="/login">Login</Link></li>
+            <li> <Link to="/register">Register</Link></li>
+            <li className="close">
+              <CloseOutlined />
+            </li>
+          </ul>
+          <div className="nav-cart"  >
+            <div>
+              0
+            </div>
+            <Link to="/cart">
+              <ShoppingCartOutlined style={{ fontSize: '25px' }} />
+            </Link>
+          </div>
+        </nav>
+      </header>
+      <Row style={{marginLeft : '650px' ,backgroundColor : '#f5f5fa'}}>
+              <Menu
+                // onClick={this.handleClick} selectedKeys={[current]}
+                className="w-full"
+                mode="horizontal"
+              >
+                {isLogin && (user.data ? user.data.kindPerson:null) == "admin" ? (
+                  <Menu.Item key="1" icon={<HomeOutlined />}>
+                    <Link to="/usertable">usertable</Link>
+                  </Menu.Item>
+                ) : null}
+                <Menu.Item key="2" icon={<AppstoreOutlined />}>
+                  <Link to="/booktable">booktable</Link>
+                </Menu.Item>
+                <Menu.Item key="3">
+                  <Link to="/basket">basket</Link>
+                </Menu.Item>
+                <Menu.Item key="4">
+                  <Link to="/bill">bill</Link>
+                </Menu.Item>
+              </Menu>
+            </Row>
     </div>
+
   );
 }

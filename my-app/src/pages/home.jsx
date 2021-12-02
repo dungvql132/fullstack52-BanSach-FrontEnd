@@ -10,26 +10,26 @@ const { SubMenu } = Menu;
 
 export default function Home() {
   return (
-    <div className="">
+    <div style={{width: '90%' , margin : '0 auto'}}>
       <div>
         <Slide easing="ease">
           <div className="each-slide">
             <img
-              src={`https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg`}
+              src={`https://salt.tikicdn.com/cache/w1080/ts/banner/7a/d9/40/73a49c3cb3ef82977720075e504ec413.png.webp`}
               className="w-full"
               style={{height:"450px"}}
             ></img>
           </div>
           <div className="each-slide">
             <img
-              src={`https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg`}
+              src={`https://salt.tikicdn.com/cache/w1080/ts/banner/a1/96/69/e7c515696abe7d198764b60fbc7d2dad.png.webp`}
               className="w-full"
               style={{height:"450px"}}
             ></img>
           </div>
           <div className="each-slide">
             <img
-              src={`https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg`}
+              src={`https://salt.tikicdn.com/cache/w1080/ts/banner/5d/be/84/8775d96ec344c29e15cba1cd3d9345b4.png.webp`}
               className="w-full"
               style={{height:"450px"}}
             ></img>

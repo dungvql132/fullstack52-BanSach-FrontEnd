@@ -49,6 +49,9 @@ function App() {
             <h1>Not Found 404</h1>
           </Route>
         </Switch>
+        <footer>
+          <Compoment.Footer></Compoment.Footer>
+        </footer>
       </div>
     </Router>
   );

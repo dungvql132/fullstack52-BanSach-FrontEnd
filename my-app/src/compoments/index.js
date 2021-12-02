@@ -19,7 +19,7 @@ import BillTable from "./BillTable";
 import UpdateMyselfForm from "./UpdateMyselfForm";
 import ViewAllBook from "./ViewAllBook";
 import ForgotPass from "./ForgotPass";
-
+import Footer from "./Footer";
 const Compoment = {
     RegisterForm,
     LoginForm,
@@ -35,7 +35,8 @@ const Compoment = {
     BillTable,
     UpdateMyselfForm,
     ViewAllBook,
-    ForgotPass
+    ForgotPass,
+    Footer
 }
 
 export {
@@ -52,7 +53,8 @@ export {
     BillTable,
     UpdateMyselfForm,
     ViewAllBook,
-    ForgotPass
+    ForgotPass,
+    Footer
 }
 
 export default Compoment;
