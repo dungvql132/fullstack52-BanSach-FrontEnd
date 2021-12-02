@@ -20,6 +20,7 @@ export default function ViewBook2({ data }) {
           <Row><p className='text-2xl'>{"Description: " + data.description}</p></Row>
           <Row>
             <button
+          
             className="border-collapse border-2 border-black"
               onClick={async () => {
                 console.log("bam vao buy");

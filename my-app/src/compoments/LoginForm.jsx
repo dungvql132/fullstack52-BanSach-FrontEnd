@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Form, Input, Button, Row, Col } from "antd";
+import { Form, Input, Button, Row, Col,message } from "antd";
 import API from "../callAPI";
 import { MainContext } from "../context";
 import { Link } from "react-router-dom";
@@ -17,11 +17,17 @@ export default function LoginForm() {
       wrapperCol={{ span: 16 }}
       size="large"
       onFinish={async () => {
-        // console.log(user);
+        console.log("user mail: ", form.getFieldsValue());
         let result = await API.Login.signin(form.getFieldsValue());
+        console.log("result login: ",result);
         if (result.status == 200) {
           localStorage.setItem("token", result.token);
-          setIsLogin(true);
+          let myUser = await API.Login.getCurrentUser();
+          if (myUser.data.kindPerson != "admin") {
+            setIsLogin(true);
+          }else{
+            message.info('không đủ thẩm quyền !!');
+          }
         }
       }}
     >

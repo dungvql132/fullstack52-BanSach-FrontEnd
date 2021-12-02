@@ -3,42 +3,63 @@ import React from "react";
 import API from "../callAPI";
 import { MainContext } from "../context";
 import { Table, Col, Button, Row } from "antd";
-import {MinusOutlined,PlusOutlined} from "@ant-design/icons";
+import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import { useHistory, useLocation } from "react-router-dom";
+import SearchForm from "./SearchForm";
 
 export default function Basket() {
+  const history = useHistory();
+  const location = useLocation();
   const { userBasket, setUserBasket } = React.useContext(MainContext);
   const [data, setData] = React.useState([]);
   const [isDelete, setIsDelete] = React.useState(false);
   const [selectRow, setSelectRow] = React.useState([]);
   const [amount, setAmount] = React.useState(0);
   const [idBill, setIdBill] = React.useState("");
+  const [searchText, setSearchText] = React.useState('');
 
   React.useEffect(async () => {
     callData();
   }, []);
+
+  const handleSearch = async()=>{
+    const user = await API.Login.getCurrentUser();
+    let myBill = await API.Bill.find({
+      idBuyer: user.data._id,
+      type: "basket",
+    });
+    let myData = myBill.data[0].idBooks;
+
+    let newData = myData.filter((value)=>{
+      return value.author.indexOf(searchText)!= -1;
+    })
+    console.log("searchText: ",searchText);
+    console.log("new data search: ",newData);
+    setData(newData);
+  }
 
   const callData = async () => {
     let myAmount = 0;
     let user = await API.Login.getCurrentUser();
     let myData = [];
     let myBill = await API.Bill.find({
-      "idBuyer": user.data._id,
-      "type": "basket",
+      idBuyer: user.data._id,
+      type: "basket",
     });
-    console.log("my bill: ",myBill);
+    console.log("my bill: ", myBill);
     if (myBill.data.length != 0) {
       // idBill = myBill.data[0]._id;
       setIdBill(myBill.data[0]._id);
       myData = myBill.data[0].idBooks.map((value, index) => {
         value.key = String(index + 1);
         value.count = myBill.data[0].count[index];
-        myAmount += Number(myBill.data[0].count[index])*Number(value.cost);
+        myAmount += Number(myBill.data[0].count[index]) * Number(value.cost);
         return value;
       });
       console.log("my data: ", myData);
       setAmount(myAmount);
       setData(myData);
-    }else{
+    } else {
       setData([]);
       setAmount(0);
     }
@@ -65,8 +86,8 @@ export default function Basket() {
       render: (count, row) => (
         <span className="flex">
           <Button
-          shape="circle"
-          icon={<MinusOutlined></MinusOutlined>}
+            shape="circle"
+            icon={<MinusOutlined></MinusOutlined>}
             onClick={async () => {
               if (Number(count) > 1) {
                 let user = await API.Login.getCurrentUser();
@@ -90,12 +111,11 @@ export default function Basket() {
                 callData();
               }
             }}
-          >
-          </Button>
+          ></Button>
           <h3 className="mx-4 text-xl">{count}</h3>
           <Button
-          shape="circle"
-          icon={<PlusOutlined/>}
+            shape="circle"
+            icon={<PlusOutlined />}
             onClick={async () => {
               if (Number(count) >= 1) {
                 let user = await API.Login.getCurrentUser();
@@ -119,8 +139,7 @@ export default function Basket() {
                 callData();
               }
             }}
-          >
-          </Button>
+          ></Button>
         </span>
       ),
     },
@@ -148,6 +167,12 @@ export default function Basket() {
 
   return (
     <div>
+      <div className="my-6">
+        <SearchForm
+          handleSearch={handleSearch}
+          setSearchText={setSearchText}
+        ></SearchForm>
+      </div>
       <Table
         columns={columns}
         dataSource={data}
@@ -157,49 +182,57 @@ export default function Basket() {
         }}
       ></Table>
       <Row>
-      <Col span={4}>
-        <Button
-          type=""
-          disabled={!isDelete}
-          onClick={async () => {
-            let user = await API.Login.getCurrentUser();
-            let myBill = await API.Bill.find({
-              idBuyer: user.data._id,
-              type: "basket",
-            });
-            for (let i = 0; i < selectRow.length; i++) {
-              console.log("row: ", selectRow[i]._id);
-              for (let j = 0; j < myBill.data[0].idBooks.length; j++) {
-                console.log("delete bill: ", myBill.data[0].idBooks[j]._id);
-                if (myBill.data[0].idBooks[j]._id == selectRow[i]._id) {
-                  myBill.data[0].count.splice(j, 1);
-                  myBill.data[0].idBooks.splice(j, 1);
-                  break;
+        <Col span={4}>
+          <Button
+            type=""
+            disabled={!isDelete}
+            onClick={async () => {
+              let user = await API.Login.getCurrentUser();
+              let myBill = await API.Bill.find({
+                idBuyer: user.data._id,
+                type: "basket",
+              });
+              for (let i = 0; i < selectRow.length; i++) {
+                console.log("row: ", selectRow[i]._id);
+                for (let j = 0; j < myBill.data[0].idBooks.length; j++) {
+                  console.log("delete bill: ", myBill.data[0].idBooks[j]._id);
+                  if (myBill.data[0].idBooks[j]._id == selectRow[i]._id) {
+                    myBill.data[0].count.splice(j, 1);
+                    myBill.data[0].idBooks.splice(j, 1);
+                    break;
+                  }
                 }
               }
-            }
-            let rerult = await API.Bill.update(
-              { _id: myBill.data[0]._id },
-              myBill.data[0]
-            );
-            callData();
-          }}
-        >
-          Delete
-        </Button>
-      </Col>
-      <Col span={6} offset={6}>
-        Amount:{amount}
-      </Col>
-      <Col span={4} offset={4}>
-        <Button onClick={async ()=>{
-          console.log("thanh toan");
-          console.log("id bill: ",idBill);
-          let update = await API.Bill.update({"_id":idBill},{"type":"amounted",cost:amount});
-          console.log("update: ",update);
-          await callData();
-        }}>thanh toan</Button>
-      </Col>
+              let rerult = await API.Bill.update(
+                { _id: myBill.data[0]._id },
+                myBill.data[0]
+              );
+              callData();
+            }}
+          >
+            Delete
+          </Button>
+        </Col>
+        <Col span={6} offset={6}>
+          Amount:{amount}
+        </Col>
+        <Col span={4} offset={4}>
+          <Button
+            onClick={async () => {
+              console.log("thanh toan");
+              console.log("id bill: ", idBill);
+              let update = await API.Bill.update(
+                { _id: idBill },
+                { type: "amounted", cost: amount }
+              );
+              console.log("update: ", update);
+              await callData();
+              history.push("/bill");
+            }}
+          >
+            thanh toan
+          </Button>
+        </Col>
       </Row>
     </div>
   );

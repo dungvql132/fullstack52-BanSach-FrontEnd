@@ -66,7 +66,6 @@ export default function Header() {
           <Col span={10} offset={8}>
             <Row className={"h-1/2"}>
               <Col span={10}>
-                <SearchForm></SearchForm>
               </Col>
               {!isLogin ? (
                 <Col span={12} offset={2}>

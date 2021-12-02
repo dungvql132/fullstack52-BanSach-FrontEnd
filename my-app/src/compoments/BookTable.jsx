@@ -4,6 +4,7 @@ import styled from "styled-components";
 import API from "../callAPI";
 import React, { useState, useEffect } from "react";
 import AddBook from "./AddBook";
+import SearchForm from "./SearchForm";
 
 const MyTable = styled.div`
   .ant-table-cell {
@@ -20,6 +21,7 @@ export default function BookTable() {
   const [datas, setDatas] = useState([]);
   const [isDelete, setIsDelete] = useState(false);
   const [selectRow, setSelectRow] = useState([]);
+  const [searchText, setSearchText] = useState('');
 
   const handleRefresh = () => {
     callData();
@@ -27,6 +29,19 @@ export default function BookTable() {
   useEffect(async () => {
     await callData();
   }, []);
+
+  const handleSearch = async()=>{
+    const user = await API.Login.getCurrentUser();
+    let myData = await API.Book.find({
+      "idProducer":user.data._id
+    });
+    let newData = myData.data.filter((value)=>{
+      return value.bookName.indexOf(searchText)!= -1;
+    })
+    console.log("searchText: ",searchText);
+    console.log("new data search: ",newData);
+    setDatas(newData);
+  }
 
   const callData = async () => {
     try {
@@ -112,6 +127,9 @@ export default function BookTable() {
 
   return (
     <MyTable className="w-9/12 mx-auto">
+      <div className='my-6'>
+      <SearchForm handleSearch={handleSearch} setSearchText={setSearchText}></SearchForm>
+      </div>
       <Table
         columns={columns}
         dataSource={datas}
